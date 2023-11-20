@@ -1,60 +1,50 @@
 function getComputerChoice() {
-    let randomNumber = Math.floor(Math.random() * 3) + 1;
-    let choice 
-
-    if(randomNumber == 1) {
-        choice = 'Rock'
-    } else if(randomNumber == 2) {
-        choice = 'Paper'
-    } else {
-        choice = 'Scissors'
-    }
-
-    return choice.toLowerCase()
+    const randomNumber = Math.floor(Math.random() * 3);
+    const choices = ['rock', 'paper', 'scissors'];
+    return choices[randomNumber];
 }
-
-const randomComputerChoice = getComputerChoice()
-
-let playerChoice = prompt("Choose Rock, Paper or Scissors").toLocaleLowerCase()
 
 function playOneRound(playerSelection, computerSelection) {
-    switch (playerSelection) {
-        case 'rock':
-            if(computerSelection == 'rock') {
-                return 'Draw!'
-            } else if(computerSelection == 'paper') {
-                return 'You lose, Paper wins over Rock!'
-            } else {
-                return 'You win, Rock wins over Scissors!'
-            }
-            break;
-
-        case 'paper':
-            if(computerSelection == 'paper') {
-                return 'Draw!'
-            } else if(computerSelection == 'scissors') {
-                return 'You lose, Scissors win over Paper!'
-            } else {
-                return 'You win, Paper wins over Rock!'
-            }
-            break;
-
-        case 'scissors':
-            if(computerSelection == 'scissors') {
-                return 'Draw!'
-            } else if(computerSelection == 'rock') {
-                return 'You lose, Rock wins over Scissors!'
-            } else {
-                return 'You win, Scissors wins over Paper!'
-            }
-            break;
-    
-        default:
-            return 'Invalid selection. Please choose rock, paper, or scissors.';
-            break;
+    if (playerSelection === computerSelection) {
+        return 'draw';
+    } else if (
+        (playerSelection === 'rock' && computerSelection === 'scissors') ||
+        (playerSelection === 'paper' && computerSelection === 'rock') ||
+        (playerSelection === 'scissors' && computerSelection === 'paper')
+    ) {
+        return 'win';
+    } else {
+        return 'lose';
     }
 }
 
-let outcome = playOneRound(playerChoice, randomComputerChoice)
+function game() {
+    let playerScore = 0;
+    let computerScore = 0;
 
-console.log(outcome)
+    for (let i = 0; i < 5; i++) {
+        const playerChoice = prompt("Choose Rock, Paper or Scissors").toLowerCase();
+        const computerChoice = getComputerChoice();
+        const result = playOneRound(playerChoice, computerChoice);
+
+        if (result === 'win') {
+            console.log(`Round ${i + 1}: You win! ${playerChoice} beats ${computerChoice}`);
+            playerScore++;
+        } else if (result === 'lose') {
+            console.log(`Round ${i + 1}: You lose! ${computerChoice} beats ${playerChoice}`);
+            computerScore++;
+        } else {
+            console.log(`Round ${i + 1}: It's a draw!`);
+        }
+    }
+
+    if (playerScore > computerScore) {
+        console.log(`Game over: You won! Score: ${playerScore} - ${computerScore}`);
+    } else if (playerScore < computerScore) {
+        console.log(`Game over: You lost! Score: ${playerScore} - ${computerScore}`);
+    } else {
+        console.log(`Game over: It's a draw! Score: ${playerScore} - ${computerScore}`);
+    }
+}
+
+game();
